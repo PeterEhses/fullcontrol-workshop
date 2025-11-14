@@ -15,7 +15,7 @@ def _():
 @app.cell
 def _(mo):
     mo.md("""
-    # Lesson 01: Spiral Explorations
+    # Lesson 01: Spiraling
 
     Design spirals by controlling the printer's path directly!
     """)
@@ -25,7 +25,7 @@ def _(mo):
 @app.cell
 def _(mo):
     mo.md("""
-    ## Interactive Controls
+    ## Controls
     """)
     return
 
@@ -33,28 +33,42 @@ def _(mo):
 @app.cell
 def _(mo):
     # Create sliders for experimentation
+    starting_radius_slider = mo.ui.slider(5, 50, value=10, label="Starting radius (mm)")
     turns_slider = mo.ui.slider(5, 50, value=20, label="Number of turns")
     radius_growth_slider = mo.ui.slider(0.1, 2.0, value=0.5, step=0.1, label="Radius growth per turn")
     height_per_turn_slider = mo.ui.slider(0.1, 1.0, value=0.2, step=0.05, label="Height per turn (mm)")
 
-    mo.vstack([turns_slider, radius_growth_slider, height_per_turn_slider])
-    return height_per_turn_slider, radius_growth_slider, turns_slider
+    mo.vstack([starting_radius_slider, turns_slider, radius_growth_slider, height_per_turn_slider])
+    return (
+        height_per_turn_slider,
+        radius_growth_slider,
+        starting_radius_slider,
+        turns_slider,
+    )
 
 
 @app.cell
 def _(mo):
     mo.md("""
-    ## Your Spiral
+    ## Result
     """)
     return
 
 
 @app.cell
-def _(fc, height_per_turn_slider, math, radius_growth_slider, turns_slider):
+def _(
+    fc,
+    height_per_turn_slider,
+    math,
+    radius_growth_slider,
+    starting_radius_slider,
+    turns_slider,
+):
     # Generate spiral points
     steps = []
 
     num_turns = turns_slider.value
+    starting_radius = starting_radius_slider.value  # Starting radius in mm
     radius_growth = radius_growth_slider.value
     height_per_turn = height_per_turn_slider.value
 
@@ -67,7 +81,7 @@ def _(fc, height_per_turn_slider, math, radius_growth_slider, turns_slider):
 
         # Calculate radius (grows with each turn)
         turn_number = i / points_per_turn
-        radius = turn_number * radius_growth
+        radius = turn_number * radius_growth + starting_radius
 
         # Calculate x, y from polar coordinates
         x = radius * math.cos(angle)
@@ -86,8 +100,6 @@ def _(fc, height_per_turn_slider, math, radius_growth_slider, turns_slider):
 @app.cell
 def _(mo):
     mo.md("""
-    ## Experiment Ideas
-
     Try these variations:
     - **Cone shape**: Keep radius constant, only increase Z
     - **Flat spiral**: Set height_per_turn to 0
@@ -121,7 +133,7 @@ def _(fc, show_gcode, steps):
         gcode = fc.transform(steps, 'gcode')
         gcode[:500] + "\n\n... (truncated) ..."  # Show first 500 characters
     else:
-        "Check the box above to see G-code"
+        gcode = "Check the box above to see G-code"
     return (gcode,)
 
 
