@@ -1,0 +1,9 @@
+name: fullcontrol_env
+channels:
+  - defaults
+dependencies:
+  - python=3.12
+  - pip
+  - pip:
+      - marimo
+      - git+https://github.com/FullControlXYZ/fullcontrol
