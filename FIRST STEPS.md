@@ -10,7 +10,7 @@
 **Windows:** Double-click `run_windows.bat`  
 **Mac/Linux:** Run `./run_mac.sh`
 
-Opens in your browser.
+Opens lesson 01 in your browser.
 
 ## Troubleshooting
 

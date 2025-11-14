@@ -33,5 +33,18 @@ IF %ERRORLEVEL% NEQ 0 (
 echo Starting FullControl Workshop...
 echo.
 
-REM Launch Marimo
-marimo edit "%SCRIPT_DIR%app.py"
+REM Check if a lesson argument was provided, otherwise use lesson-01
+SET "LESSON=%~1"
+IF "%LESSON%"=="" SET "LESSON=lesson-01-spiral-explorations"
+
+SET "LESSON_PATH=%SCRIPT_DIR%lessons\%LESSON%\notebook.py"
+
+REM Check if lesson exists
+IF NOT EXIST "%LESSON_PATH%" (
+    echo Lesson not found: %LESSON%
+    echo Using default lesson-01...
+    SET "LESSON_PATH=%SCRIPT_DIR%lessons\lesson-01-spiral-explorations\notebook.py"
+)
+
+REM Launch Marimo with the lesson notebook
+marimo edit "%LESSON_PATH%"
