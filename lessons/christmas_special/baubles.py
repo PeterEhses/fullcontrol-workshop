@@ -1,6 +1,6 @@
 import marimo
 
-__generated_with = "0.17.8"
+__generated_with = "0.18.4"
 app = marimo.App(width="medium")
 
 with app.setup:
@@ -16,10 +16,15 @@ def _():
     import numpy as np
     import plotly.graph_objects as go
     import os
+
+    global local_max
+    local_max = 0
+    import fullcontrol.visualize
+
     from fullcontrol.visualize.plot_data import PlotData
     from fullcontrol.visualize.controls import PlotControls
     from fullcontrol.visualize.tube_mesh import CylindersMesh, FlowTubeMesh, MeshExporter
-    from fullcontrol.visualize.plotly import generate_mesh, local_max
+    from fullcontrol.visualize.plotly import generate_mesh
 
     def plot(data: PlotData, controls: PlotControls):
         '''
@@ -33,7 +38,7 @@ def _():
         Returns:
             None
         '''
-    
+
         fig = go.Figure()
         cicd_testing = True if os.environ.get('FULLCONTROL_CICD_TESTING') == 'True' else False
         controls.raw_data = False
@@ -120,7 +125,7 @@ def _():
             fig.update_layout(width=500, height=500)
 
         return fig
-    return (plot,)
+    return local_max, plot
 
 
 @app.cell
@@ -135,7 +140,7 @@ def _():
 
 @app.cell
 def _():
-    # printer/gcode parameters for Prusa MK4s with 1.2mm nozzle
+    # printer/gcode parameters for Prusa MK4s with 0.4mm nozzle # 1.2mm nozzle
 
     nozzle_temp = 215
     bed_temp = 60
@@ -150,7 +155,7 @@ def _():
     # design parameters
 
     EW = 1.45 # extrusion width
-    EH = 0.8 # extrusion height (and layer height)
+    EH = 0.48 # extrusion height (and layer height)
     initial_z = EH*0.6 # initial nozzle position is set to 0.6x the extrusion height to get a bit of 'squish' for good bed adhesion
 
     mo.show_code()
@@ -341,7 +346,7 @@ def _():
     return (show_code,)
 
 
-@app.cell
+@app.cell(hide_code=True)
 def _(
     EH,
     base_radius,
@@ -481,15 +486,15 @@ def _(
                 'extrusion_height': EH
             }
         )
-    
+
         # Transform steps to GCode
         gcode_to_save = fc.transform(steps, 'gcode', gcode_controls)
-    
+
         # # Save directly to file
         # filename = f"{design_name}.gcode"
         # with open(filename, "w") as f:
         #     f.write(gcode_to_save)
-    
+
         # print(f"GCode saved to {filename}")
 
     # --- create the button ---
