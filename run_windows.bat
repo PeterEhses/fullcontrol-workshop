@@ -1,50 +1,32 @@
 @echo off
-SETLOCAL EnableDelayedExpansion
+REM Double-click to open lesson 01 as an app.
+REM From a terminal:  run_windows.bat 05-the-noodle
+REM                   run_windows.bat 05-the-noodle edit
+cd /d "%~dp0"
 
-SET "SCRIPT_DIR=%~dp0"
-SET "MINICONDA_DIR=%SCRIPT_DIR%Miniconda3"
+set "LESSON=%~1"
+if "%LESSON%"=="" set "LESSON=01-the-path"
 
-REM Check if setup has been run
-IF NOT EXIST "%MINICONDA_DIR%\Scripts\conda.exe" (
-    echo ========================================
-    echo First Time Setup Required
-    echo ========================================
-    echo.
-    echo Please run setup_windows.bat first to install Miniconda
-    echo and create the workshop environment.
-    echo.
+set "DIR=lessons\%LESSON%"
+if not exist "%DIR%" set "DIR=%LESSON%"
+if not exist "%DIR%" (
+    echo No lesson called "%LESSON%". Available:
+    dir /b lessons
     pause
     exit /b 1
 )
 
-REM Check if environment exists
-CALL "%MINICONDA_DIR%\Scripts\activate.bat" fullcontrol_env 2>nul
-IF %ERRORLEVEL% NEQ 0 (
-    echo ========================================
-    echo Environment Not Found
-    echo ========================================
-    echo.
-    echo Please run setup_windows.bat to create the fullcontrol_env environment.
-    echo.
+set "NOTEBOOK="
+for %%F in ("%DIR%\*.py") do if not defined NOTEBOOK set "NOTEBOOK=%%F"
+if not defined NOTEBOOK (
+    echo No notebook in %DIR%
     pause
     exit /b 1
 )
 
-echo Starting FullControl Workshop...
-echo.
-
-REM Check if a lesson argument was provided, otherwise use lesson-01
-SET "LESSON=%~1"
-IF "%LESSON%"=="" SET "LESSON=lesson-01-spiral-explorations"
-
-SET "LESSON_PATH=%SCRIPT_DIR%lessons\%LESSON%\notebook.py"
-
-REM Check if lesson exists
-IF NOT EXIST "%LESSON_PATH%" (
-    echo Lesson not found: %LESSON%
-    echo Using default lesson-01...
-    SET "LESSON_PATH=%SCRIPT_DIR%lessons\lesson-01-spiral-explorations\notebook.py"
+if /i "%~2"=="edit" (
+    uv run marimo edit "%NOTEBOOK%"
+) else (
+    uv run marimo run "%NOTEBOOK%"
 )
-
-REM Launch Marimo with the lesson notebook
-marimo edit "%LESSON_PATH%"
+pause

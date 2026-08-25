@@ -1,15 +1,22 @@
 [project]
 name = "fullcontrol-workshop"
-version = "0.1.0"
-description = "Add your description here"
+version = "1.0.0"
+description = "A four-day workshop on designing 3D printer toolpaths directly, in Python."
 readme = "README.md"
 requires-python = ">=3.13"
 dependencies = [
     "fullcontrol>=0.1.2",
     "marimo>=0.18.4",
+    "numpy",
+    "plotly",
 ]
 
-[tool.uv.workspace]
-members = [
-    "trial",
-]
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["workshop"]
+
+[tool.marimo.runtime]
+output_max_bytes = 10_000_000

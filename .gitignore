@@ -1,32 +1,21 @@
-# Python cache files
+# marimo's cached cell outputs — huge, regenerated on every run
+__marimo__/
+
+# Python
 __pycache__/
 *.pyc
-*.pyo
-*.pyd
-
-# Virtual environments / Conda environments
-venv/
-env/
-fullcontrol_env/
-*.conda/
 *.egg-info/
 
-# OS-specific files
+# Environments
+.venv/
+Miniconda3/
+
+# Your prints
+output/*.gcode
+
+# OS / editor
 .DS_Store
 Thumbs.db
 desktop.ini
-
-# IDE / editor files
 .vscode/
 .idea/
-*.sublime-workspace
-*.sublime-project
-
-# Logs
-*.log
-
-# Miniconda folder (optional if you distribute portable Python)
-Miniconda3/
-
-# Temporary Marimo files (if any)
-.marimo/

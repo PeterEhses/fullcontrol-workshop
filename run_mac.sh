@@ -1,45 +1,28 @@
-#!/bin/bash
+#!/usr/bin/env bash
+# ./run_mac.sh                    -> opens lesson 01 as an app
+# ./run_mac.sh 05-the-noodle      -> opens that lesson
+# ./run_mac.sh 05-the-noodle edit -> opens it with the code visible and editable
+set -e
+cd "$(dirname "$0")"
 
-SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
-MINICONDA_DIR="$SCRIPT_DIR/Miniconda3"
+LESSON="${1:-01-the-path}"
+DIR="lessons/$LESSON"
+[ -d "$DIR" ] || DIR="$LESSON"
 
-# Check if setup has been run
-if [ ! -f "$MINICONDA_DIR/bin/conda" ]; then
-    echo "========================================"
-    echo "First Time Setup Required"
-    echo "========================================"
-    echo
-    echo "Please run ./setup_mac.sh first to install Miniconda"
-    echo "and create the workshop environment."
-    echo
+if [ ! -d "$DIR" ]; then
+    echo "No lesson called '$LESSON'. Available:"
+    ls lessons
     exit 1
 fi
 
-# Check if environment exists
-source "$MINICONDA_DIR/bin/activate" fullcontrol_env 2>/dev/null
-if [ $? -ne 0 ]; then
-    echo "========================================"
-    echo "Environment Not Found"
-    echo "========================================"
-    echo
-    echo "Please run ./setup_mac.sh to create the fullcontrol_env environment."
-    echo
+NOTEBOOK=$(find "$DIR" -maxdepth 1 -name '*.py' | head -1)
+if [ -z "$NOTEBOOK" ]; then
+    echo "No notebook in $DIR"
     exit 1
 fi
 
-echo "Starting FullControl Workshop..."
-echo
-
-# Check if a lesson argument was provided, otherwise use lesson-01
-LESSON="${1:-lesson-01-spiral-explorations}"
-LESSON_PATH="$SCRIPT_DIR/lessons/$LESSON/notebook.py"
-
-# Check if lesson exists
-if [ ! -f "$LESSON_PATH" ]; then
-    echo "Lesson not found: $LESSON"
-    echo "Using default lesson-01..."
-    LESSON_PATH="$SCRIPT_DIR/lessons/lesson-01-spiral-explorations/notebook.py"
+if [ "$2" = "edit" ]; then
+    uv run marimo edit "$NOTEBOOK"
+else
+    uv run marimo run "$NOTEBOOK"
 fi
-
-# Launch Marimo with the lesson notebook
-marimo edit "$LESSON_PATH"
