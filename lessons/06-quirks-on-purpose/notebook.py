@@ -16,15 +16,18 @@ with app.setup:
 def _():
     mo.md(
         """
-        # 06 · Quirks on purpose
+        # 06 · Past the die
 
-        Yesterday a quirk was something that happened to the whole object. That's an
-        accident with a slider on it.
+        A pasta die makes the same cross-section for the whole length of the noodle.
+        That's what a die *is* — one fixed shape, repeated until someone cuts it.
 
-        Here you say *where*. A band of height, a slice of the circle. Everything
-        outside it prints clean. The difference between "it blobbed" and "it blobs
-        here, this much, because I put it there" is the difference between a defect
-        and a technique.
+        You don't have a die. You can change the shape at any point, and you can change
+        things a die has no access to at all: how much comes out, how fast, whether
+        anything comes out.
+
+        So: say *where*. A band of height, a slice of the circle. Everything outside it
+        prints clean. The difference between "it blobbed" and "it blobs here, this much,
+        because I put it there" is the difference between a defect and a decision.
         """
     )
     return

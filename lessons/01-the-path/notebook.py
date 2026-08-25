@@ -12,13 +12,11 @@ with app.setup:
 
 @app.cell(hide_code=True)
 def _():
-    mo.md(
-        """
-        # 01 · The path is the object
+    mo.md("""
+    # 01 · The path is the object
 
-        No model. No slicer. A list of places the nozzle goes, in order.
-        """
-    )
+    No model. No slicer. A list of places the nozzle goes, in order.
+    """)
     return
 
 
@@ -40,7 +38,7 @@ def _():
 
 
 @app.cell
-def _(close_loop, corner_lift, size, show_code):
+def _(close_loop, corner_lift, show_code, size):
     centre = PRINTER.centre()
     half = size.value / 2
     lift = corner_lift.value
@@ -52,7 +50,10 @@ def _(close_loop, corner_lift, size, show_code):
         (-half, +half),
     ]
 
-    steps = []
+    # moving and extruding are two separate things. switch the extruder on first,
+    # or the printer just drives the nozzle around in the air.
+    steps = [fc.Extruder(on=True)]
+
     for i, (dx, dy) in enumerate(corners):
         steps.append(fc.Point(x=centre.x + dx, y=centre.y + dy, z=centre.z + i * lift))
 
@@ -86,15 +87,13 @@ def _(steps):
 
 @app.cell(hide_code=True)
 def _():
-    mo.md(
-        """
-        ---
+    mo.md("""
+    ---
 
-        Four corners took four lines to type. A circle needs a hundred points.
+    Four corners took four lines to type. A circle needs a hundred points.
 
-        **Are you going to type them?**
-        """
-    )
+    **Are you going to type them?**
+    """)
     return
 
 

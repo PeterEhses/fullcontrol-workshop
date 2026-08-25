@@ -1,20 +1,36 @@
-# 06 · Quirks on purpose
+# 06 · Past the die
 
 **Day 3 · ~2 h**
 
 ## The move
 
-Yesterday's quirks happened to the whole object. That's an accident with a slider on it.
+A die makes one fixed cross-section for the whole length. That's the constraint every
+shape in lesson 05 was built under.
 
-Here you say *where*. A band of height, a slice of the circle, faded or hard-edged.
-Everything outside the region prints clean. That is the step from defect to technique.
+You don't have that constraint. You can change the shape anywhere along the noodle, and
+you can change things a die has no access to at all — how much plastic comes out, how
+fast the nozzle moves, whether it extrudes at all.
+
+Four of those are on sliders here, each with a **region**: a band of height, a slice of
+the circle, faded or hard-edged. Everything outside the region prints clean.
 
 ## Do
 
-Take two quirks off your list. Place each one somewhere specific on the same object.
+Bulge, ripple, flare, threads. One at a time first.
 
-Then hand it to someone without saying anything and watch whether they read it as damage
-or as a decision. If they can't tell, that is information about the object.
+Then place two of them somewhere specific on the same object. Not "it blobbed" — "it
+blobs *here*, this much, because I put it there."
+
+Hand it to someone without saying anything and watch whether they read it as damage or
+as a decision. If they can't tell, that's information about the object.
+
+**With a printer:** the threads setting is the one to print. Stringing is the defect
+slicers work hardest to eliminate, and it's the one that looks least like a defect once
+it's deliberate.
+
+**Without:** the preview is at real extrusion width, so bulge and flare show up as
+volume. For the threads, look for the thin travel lines and picture what trails behind
+a hot nozzle crossing that gap.
 
 ## Leave on
 

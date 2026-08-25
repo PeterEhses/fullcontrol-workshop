@@ -49,8 +49,8 @@ Saved G-code lands in `output/`.
 
 | | |
 |---|---|
-| [05-the-noodle](lessons/05-the-noodle) | Five ways out of spec, on sliders. Keep a list of what's interesting. |
-| [06-quirks-on-purpose](lessons/06-quirks-on-purpose) | Say *where* it happens. Defect becomes technique. |
+| [05-the-noodle](lessons/05-the-noodle) | Code actual pasta. Eight named shapes, one loop, different numbers. |
+| [06-quirks-on-purpose](lessons/06-quirks-on-purpose) | Past the die: bulge, ripple, flare, threads — placed on purpose. |
 
 **Day 4 — compose.**
 

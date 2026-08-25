@@ -14,14 +14,12 @@ with app.setup:
 
 @app.cell(hide_code=True)
 def _():
-    mo.md(
-        """
-        # 02 · Let the loop type it
+    mo.md("""
+    # 02 · Let the loop type it
 
-        The same four-corner idea, except the corners are calculated. Now a hundred
-        points costs the same as four.
-        """
-    )
+    The same four-corner idea, except the corners are calculated. Now a hundred
+    points costs the same as four.
+    """)
     return
 
 
@@ -76,31 +74,31 @@ def _(steps):
 
 @app.cell(hide_code=True)
 def _(steps):
-    mo.md(f"**{len(steps)} points.** You typed none of them.")
+    mo.md(f"""
+    **{len(steps)} points.** You typed none of them.
+    """)
     return
 
 
 @app.cell(hide_code=True)
 def _():
-    mo.md(
-        """
-        ## Things to try
+    mo.md("""
+    ## Things to try
 
-        - Rise per turn at `0` — a flat spiral, one layer, no height at all.
-        - Radius growth negative — it winds inward instead. What happens when the
-          radius passes zero?
-        - Points per turn at `3`, `4`, `6` — the circle stops being a circle.
-        - Two loops instead of one, the second offset by half a turn.
+    - Rise per turn at `0` — a flat spiral, one layer, no height at all.
+    - Radius growth negative — it winds inward instead. What happens when the
+      radius passes zero?
+    - Points per turn at `3`, `4`, `6` — the circle stops being a circle.
+    - Two loops instead of one, the second offset by half a turn.
 
-        ---
+    ---
 
-        Turn the rise down to `0.05` and the turns up to `60`. The plot still looks
-        fine.
+    Turn the rise down to `0.05` and the turns up to `60`. The plot still looks
+    fine.
 
-        **The layers are now 0.05 mm apart and the nozzle is 0.4 mm across. What would
-        the printer do with that?**
-        """
-    )
+    **The layers are now 0.05 mm apart and the nozzle is 0.4 mm across. What would
+    the printer do with that?**
+    """)
     return
 
 

@@ -11,17 +11,60 @@ with app.setup:
 
     from workshop import PRINTER, plot_steps, save_gcode
 
+    # Pasta is extruded: dough pushed through a die. The die's shape is the
+    # cross-section, and the shape you get is that cross-section dragged along a line.
+    # A 3D printer is the same machine with a worse die and a longer noodle.
+    #
+    # Every shape below is the same code with different numbers.
+    PASTA = {
+        "Ziti — plain tube": dict(
+            length=60, radius=9, ridges=0, ridge_depth=0.0, rings=0, ring_depth=0.0,
+            twist=0.0, slant=0.0, bend=0.0, coil=0.0, coil_turns=0.0,
+        ),
+        "Rigatoni — straight ridges": dict(
+            length=45, radius=10, ridges=14, ridge_depth=0.16, rings=0, ring_depth=0.0,
+            twist=0.0, slant=0.0, bend=0.0, coil=0.0, coil_turns=0.0,
+        ),
+        "Penne — ridges, cut on the diagonal": dict(
+            length=55, radius=8, ridges=12, ridge_depth=0.14, rings=0, ring_depth=0.0,
+            twist=0.0, slant=7.0, bend=0.0, coil=0.0, coil_turns=0.0,
+        ),
+        "Fusilli — three twisted blades": dict(
+            length=70, radius=8, ridges=3, ridge_depth=0.45, rings=0, ring_depth=0.0,
+            twist=3.0, slant=0.0, bend=0.0, coil=0.0, coil_turns=0.0,
+        ),
+        "Maccheroni — the bent tube": dict(
+            length=55, radius=7, ridges=0, ridge_depth=0.0, rings=0, ring_depth=0.0,
+            twist=0.0, slant=0.0, bend=14.0, coil=0.0, coil_turns=0.0,
+        ),
+        "Cavatappi — corkscrew": dict(
+            length=80, radius=6, ridges=10, ridge_depth=0.14, rings=0, ring_depth=0.0,
+            twist=1.0, slant=0.0, bend=0.0, coil=9.0, coil_turns=2.5,
+        ),
+        "Radiatori — stacked frills": dict(
+            length=40, radius=9, ridges=8, ridge_depth=0.5, rings=9, ring_depth=0.3,
+            twist=0.0, slant=0.0, bend=0.0, coil=0.0, coil_turns=0.0,
+        ),
+        "Bucatini — thin, long, hollow": dict(
+            length=120, radius=3.5, ridges=0, ridge_depth=0.0, rings=0, ring_depth=0.0,
+            twist=0.0, slant=0.0, bend=0.0, coil=0.0, coil_turns=0.0,
+        ),
+    }
+
 
 @app.cell(hide_code=True)
 def _():
     mo.md(
         """
-        # 05 · The noodle
+        # 05 · Noodles
 
-        Every setting you've met so far has a range the machine is happy with. Below is
-        the same vessel from lesson 04 with five ways out of that range.
+        Pasta is extruded. Dough gets pushed through a metal die and comes out as a
+        continuous shape that then gets cut. The die is a cross-section; the noodle is
+        that cross-section dragged along a line.
 
-        Turn them up. Nothing here is a mistake — you're driving.
+        Which is what you've been doing since lesson 04.
+
+        Pick one and take it apart.
         """
     )
     return
@@ -29,74 +72,98 @@ def _():
 
 @app.cell(hide_code=True)
 def _():
-    lean = mo.ui.slider(0.0, 3.0, value=0.0, step=0.05, label="Lean outward (mm per lap)")
-    flow = mo.ui.slider(0.1, 4.0, value=1.0, step=0.1, label="Flow ×")
-    wobble = mo.ui.slider(0.0, 6.0, value=0.0, step=0.1, label="Z wobble (mm)")
-    wobble_freq = mo.ui.slider(1, 16, value=3, label="Wobbles per lap")
-    speed = mo.ui.slider(0.2, 8.0, value=1.0, step=0.1, label="Speed ×")
-    gap_every = mo.ui.slider(0, 40, value=0, label="Lift off every … segments")
+    shape = mo.ui.dropdown(options=list(PASTA), value="Rigatoni — straight ridges", label="Shape")
+    shape
+    return (shape,)
 
-    height = mo.ui.slider(5, 120, value=40, label="Height (mm)")
-    radius = mo.ui.slider(3, 50, value=15, label="Radius (mm)")
-    segments = mo.ui.slider(3, 128, value=48, label="Segments per lap")
 
-    controls = mo.accordion(
+@app.cell(hide_code=True)
+def _(shape):
+    # changing the dropdown rebuilds these with the new shape's numbers, which is the
+    # point — you get a starting noodle and then you push it around
+    _p = PASTA[shape.value]
+
+    length = mo.ui.slider(10, 150, value=_p["length"], label="Length (mm)")
+    radius = mo.ui.slider(2.0, 30.0, value=_p["radius"], step=0.5, label="Radius (mm)")
+    segments = mo.ui.slider(8, 160, value=72, label="Segments per lap")
+
+    ridges = mo.ui.slider(0, 30, value=_p["ridges"], label="Ridges")
+    ridge_depth = mo.ui.slider(0.0, 0.8, value=_p["ridge_depth"], step=0.02, label="Ridge depth")
+
+    rings = mo.ui.slider(0, 30, value=_p["rings"], label="Rings")
+    ring_depth = mo.ui.slider(0.0, 0.8, value=_p["ring_depth"], step=0.02, label="Ring depth")
+
+    twist = mo.ui.slider(-6.0, 6.0, value=_p["twist"], step=0.1, label="Twist (turns)")
+    slant = mo.ui.slider(0.0, 20.0, value=_p["slant"], step=0.5, label="Slant of the cut (mm)")
+
+    bend = mo.ui.slider(-40.0, 40.0, value=_p["bend"], step=0.5, label="Bend (mm sideways)")
+    coil = mo.ui.slider(0.0, 30.0, value=_p["coil"], step=0.5, label="Coil radius (mm)")
+    coil_turns = mo.ui.slider(0.0, 6.0, value=_p["coil_turns"], step=0.1, label="Coil turns")
+
+    mo.accordion(
         {
-            "① Overhang — lean past what's underneath": mo.vstack(
+            "The tube": mo.vstack([length, radius, segments]),
+            "Around — ridges": mo.vstack(
                 [
-                    lean,
+                    ridges,
+                    ridge_depth,
                     mo.md(
-                        "Each lap sits on the one below. Push it outward faster than the "
-                        "extrusion is wide and there is nothing under the outer edge. "
-                        "It droops on the way down and freezes wherever it lands."
+                        "A wave added to the radius that goes round the tube a whole number "
+                        "of times. `14` shallow ones is rigatoni; `3` deep ones is fusilli. "
+                        "This is the die."
                     ),
                 ]
             ),
-            "② Flow — more or less plastic than the path needs": mo.vstack(
+            "Along — rings": mo.vstack(
                 [
-                    flow,
+                    rings,
+                    ring_depth,
+                    mo.md("The same wave, running up the tube instead of round it. Both at once is radiatori."),
+                ]
+            ),
+            "Twist and cut": mo.vstack(
+                [
+                    twist,
+                    slant,
                     mo.md(
-                        "Below `1` the bead thins and breaks into a dotted line. Above `2` "
-                        "there's nowhere for the excess to go, so it piles up and the nozzle "
-                        "drags through it."
+                        "**Twist** rotates the cross-section as it climbs — a straight blade "
+                        "becomes a spiral one.\n\n"
+                        "**Slant** cuts the top off on a diagonal. The path keeps spiralling "
+                        "all the way up either way — it just stops laying plastic once it is "
+                        "past the cut on that side. Watch the thin travel lines appear at the top."
                     ),
                 ]
             ),
-            "③ Wobble — move z inside a lap": mo.vstack(
+            "Where the tube goes": mo.vstack(
                 [
-                    wobble,
-                    wobble_freq,
+                    bend,
+                    coil,
+                    coil_turns,
                     mo.md(
-                        "Nothing says z has to hold still while x and y move. Once it "
-                        "doesn't, 'layer' stops being a useful word for what you're making."
+                        "So far the tube has gone straight up. It doesn't have to. **Bend** "
+                        "leans the axis sideways as it rises; **coil** sends it round a helix.\n\n"
+                        "The cross-section code doesn't change at all — you're only moving "
+                        "where its centre is."
                     ),
                 ]
             ),
-            "④ Speed — outrun the extruder": mo.vstack(
-                [
-                    speed,
-                    mo.md(
-                        "The nozzle can move faster than melted plastic can leave it. "
-                        "Past that point the bead stretches into a thread."
-                    ),
-                ]
-            ),
-            "⑤ Air — stop extruding, keep moving": mo.vstack(
-                [
-                    gap_every,
-                    mo.md(
-                        "Extruder off, nozzle still travelling. Pressure in the nozzle keeps "
-                        "pushing anyway and trails a thread behind. Slicers spend a lot of "
-                        "effort hiding this."
-                    ),
-                ]
-            ),
-            "Shape": mo.vstack([height, radius, segments]),
         },
         lazy=False,
     )
-    controls
-    return flow, gap_every, height, lean, radius, segments, speed, wobble, wobble_freq
+    return (
+        bend,
+        coil,
+        coil_turns,
+        length,
+        radius,
+        ridge_depth,
+        ridges,
+        ring_depth,
+        rings,
+        segments,
+        slant,
+        twist,
+    )
 
 
 @app.cell(hide_code=True)
@@ -107,36 +174,68 @@ def _():
 
 
 @app.cell
-def _(flow, gap_every, height, lean, radius, segments, show_code, speed, wobble, wobble_freq):
-    centre = PRINTER.centre()
-    laps = max(1, int(height.value / PRINTER.extrusion_height))
+def _(
+    bend,
+    coil,
+    coil_turns,
+    length,
+    radius,
+    ridge_depth,
+    ridges,
+    ring_depth,
+    rings,
+    segments,
+    show_code,
+    slant,
+    twist,
+):
+    origin = PRINTER.centre()
+    laps = max(1, int(length.value / PRINTER.extrusion_height))
     total_points = laps * segments.value
 
-    steps = [
-        fc.ExtrusionGeometry(width=PRINTER.extrusion_width * flow.value, height=PRINTER.extrusion_height),
-        fc.Printer(print_speed=int(PRINTER.print_speed * speed.value)),
-    ]
+    steps = [fc.Extruder(on=True)]
+    extruding = True
 
-    extruder_is_on = True
     for i in range(total_points + 1):
         lap = i / segments.value
         fraction = i / total_points
-        angle = lap * math.tau
 
-        r = radius.value + lap * lean.value
+        round_the_tube = lap % 1.0
+        angle = round_the_tube * math.tau + fraction * twist.value * math.tau
 
-        z = centre.z + fraction * height.value
-        if wobble.value:
-            z += wobble.value * math.sin(angle * wobble_freq.value)
+        # the die: a circle with a wave added to it
+        r = radius.value
+        if ridges.value:
+            r += radius.value * ridge_depth.value * math.sin(round_the_tube * math.tau * ridges.value)
+        if rings.value:
+            r += radius.value * ring_depth.value * math.sin(fraction * math.tau * rings.value)
 
-        # ⑤ toggle the extruder off for one segment at a time
-        if gap_every.value:
-            should_be_on = (i % gap_every.value) != 0
-            if should_be_on != extruder_is_on:
-                steps.append(fc.Extruder(on=should_be_on))
-                extruder_is_on = should_be_on
+        # where the middle of the tube is at this height. straight up unless you say otherwise.
+        axis_x = bend.value * fraction**2
+        axis_y = 0.0
+        if coil.value:
+            coil_angle = fraction * coil_turns.value * math.tau
+            axis_x += coil.value * (math.cos(coil_angle) - 1)
+            axis_y += coil.value * math.sin(coil_angle)
 
-        steps.append(fc.Point(x=centre.x + r * math.cos(angle), y=centre.y + r * math.sin(angle), z=z))
+        z = origin.z + fraction * length.value
+
+        # penne's diagonal end: the tube is shorter on one side. the path still spirals
+        # all the way up, it just stops laying plastic once it's past the cut.
+        if slant.value:
+            cut_height = length.value - slant.value * (1 - math.cos(angle)) / 2
+            should_extrude = (fraction * length.value) <= cut_height
+            if should_extrude != extruding:
+                steps.append(fc.Extruder(on=should_extrude))
+                extruding = should_extrude
+
+        steps.append(
+            fc.Point(
+                x=origin.x + axis_x + r * math.cos(angle),
+                y=origin.y + axis_y + r * math.sin(angle),
+                z=z,
+            )
+        )
 
     mo.show_code() if show_code.value else None
     return laps, steps
@@ -149,26 +248,31 @@ def _(steps):
 
 
 @app.cell(hide_code=True)
-def _(flow, lean, speed):
-    _unsupported = lean.value / PRINTER.extrusion_width
+def _(bend, coil, laps, radius, ridge_depth, steps):
+    # how far the wall shifts sideways between one lap and the next
+    _drift = (abs(bend.value) + coil.value * 2) / max(laps, 1)
+    _overhang = _drift / PRINTER.extrusion_width
 
-    _notes = []
-    if _unsupported > 0:
-        _notes.append(f"**{_unsupported:.0%} of each lap hangs over nothing.** Past ~50% it stops being a wall.")
-    if flow.value < 0.6:
-        _notes.append("**Starved.** Not enough plastic to make a continuous bead.")
-    if flow.value > 2.0:
-        _notes.append(f"**{flow.value:.1f}× the plastic the path has room for.** It has to go somewhere.")
-    if speed.value > 2.5:
-        _notes.append("**Faster than the melt.** The bead thins and eventually gives up.")
+    _notes = [f"**{len(steps)} points**, one continuous path, {laps} laps."]
+    if _overhang > 0.35:
+        _notes.append(
+            f"Each lap sits about **{_overhang:.0%}** off the one below it. Past roughly half "
+            "an extrusion width there's nothing underneath the outer edge, and it starts to "
+            "droop on the way down."
+        )
+    if radius.value * (1 - ridge_depth.value) < PRINTER.extrusion_width:
+        _notes.append(
+            "The ridges are cutting deeper than the wall is thick. The valleys will collide "
+            "with themselves."
+        )
 
-    mo.md("\n\n".join(_notes) if _notes else "All five within spec. This one would print cleanly.")
+    mo.md("\n\n".join(_notes))
     return
 
 
 @app.cell(hide_code=True)
-def _():
-    name = mo.ui.text(value="noodle", label="Name")
+def _(shape):
+    name = mo.ui.text(value=shape.value.split(" —")[0].lower(), label="Name")
     save = mo.ui.run_button(label="Save G-code")
     mo.hstack([name, save], justify="start", gap=1)
     return name, save
@@ -184,19 +288,22 @@ def _(name, save, steps):
 def _():
     mo.md(
         """
+        ## Do this
+
+        Make one that isn't on the list and give it a name.
+
+        Not a variation on rigatoni — something the shapes above can't quite be. Push
+        bend and coil until the noodle stops standing up. Turn ridge depth past the
+        point where the ridges meet in the middle. Set segments to `5` and see what a
+        pentagonal bucatini is.
+
         ---
 
-        ## Keep a list
+        Every shape in that dropdown exists because a factory can extrude it, cut it,
+        dry it without cracking, box it without breaking, and cook it evenly. Those are
+        real constraints — they're just not yours.
 
-        Write down which settings gave you something you'd want again. Not "which ones
-        worked" — which ones were *interesting*. Those two lists are different and
-        tomorrow only needs the second one.
-
-        **Who decided these were faults?**
-
-        Nothing you just made is broken. It's outside a specification, and that
-        specification was written by people trying to make prints that look like
-        injection mouldings. That was their problem.
+        **What can you make that a pasta die can't?**
         """
     )
     return

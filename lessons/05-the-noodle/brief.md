@@ -1,33 +1,41 @@
-# 05 · The noodle
+# 05 · Noodles
 
 **Day 3 · ~2 h**
 
 ## The move
 
-The hinge of the workshop. Every parameter has a range the machine is happy with, and
-five ways out of it are on sliders in front of you.
+Pasta is extruded. Dough is pushed through a metal die and comes out as a continuous
+shape. The die is a cross-section; the noodle is that cross-section dragged along a line.
 
-The machine's failure modes are exactly as parametric as its successes. That is the
-whole claim.
+A 3D printer is the same machine with a worse die and a much longer noodle.
+
+Eight named shapes are in the dropdown — ziti, rigatoni, penne, fusilli, maccheroni,
+cavatappi, radiatori, bucatini — and every one of them is the *same loop* with different
+numbers. Pick one, then take it apart and find out which number was doing the work.
 
 ## Do
 
-One at a time, then in combination. Overhang, flow, wobble, speed, air.
+Start with rigatoni. Turn ridge depth up until it stops being rigatoni. Add twist and
+watch it become fusilli without you changing anything structural.
 
-**Keep a list** — and make it a list of what was *interesting*, not what worked. Those
-are different lists and lesson 06 only needs the second one.
+Then the two that move the tube itself: **bend** (maccheroni) and **coil** (cavatappi).
+The cross-section code is untouched — you're only moving where its centre is. That's the
+idea worth taking to lesson 07.
 
-**With a printer:** print three of them small. Watch them go down. Most of what is
-interesting here happens during the print, not after.
+Push bend and coil until the noodle stops standing up. The readout tells you how far each
+lap is hanging off the one below it; somewhere past half an extrusion width there's
+nothing underneath and it starts to droop.
 
-**Without:** the tube preview is at real extrusion width, so over- and under-extrusion
-show up as actual volume. For sag and stringing, find the segments in the plot with
-nothing underneath them and reason forward from there.
+**Make one that isn't on the list and give it a name.**
+
+**With a printer:** print two or three small. They print fast and they're funny objects
+to have in your hand while you argue about the next bit.
 
 ## Leave on
 
-**Who decided these were faults?**
+Every shape in that dropdown exists because a factory can extrude it, cut it, dry it
+without cracking, box it without breaking, and cook it evenly.
 
-Nothing here is broken. It is outside a specification — one written by people trying to
-make prints that look like injection mouldings. That was their goal, not necessarily
-yours.
+Those are real constraints. They're just not yours.
+
+**What can you make that a pasta die can't?**
