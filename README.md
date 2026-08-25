@@ -21,7 +21,11 @@ To open a different lesson, or to edit the code rather than drive it:
 ```
 ./run_mac.sh 05-the-noodle          # or run_windows.bat 05-the-noodle
 ./run_mac.sh 05-the-noodle edit     # code visible and editable
+./run_mac.sh browse                 # marimo's own editor: file browser, sidebar, all lessons
 ```
+
+`browse` prints a URL with an access token in the terminal — open that one, not plain
+`localhost`.
 
 Saved G-code lands in `output/`.
 

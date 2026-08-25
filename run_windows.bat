@@ -2,10 +2,17 @@
 REM Double-click to open lesson 01 as an app.
 REM From a terminal:  run_windows.bat 05-the-noodle
 REM                   run_windows.bat 05-the-noodle edit
+REM                   run_windows.bat browse
 cd /d "%~dp0"
 
 set "LESSON=%~1"
 if "%LESSON%"=="" set "LESSON=01-the-path"
+
+REM the full marimo editor, with the file browser and sidebar
+if /i "%LESSON%"=="browse" (
+    uv run marimo edit .
+    exit /b 0
+)
 
 set "DIR=lessons\%LESSON%"
 if not exist "%DIR%" set "DIR=%LESSON%"
