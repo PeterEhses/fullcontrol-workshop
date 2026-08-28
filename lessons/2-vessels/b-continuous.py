@@ -14,18 +14,16 @@ with app.setup:
 
 @app.cell(hide_code=True)
 def _():
-    mo.md(
-        """
-        # 04 · One continuous path
+    mo.md("""
+    # 04 · One continuous path
 
-        A normal print does a lap, stops, steps up, does the next lap. Every step is a
-        seam.
+    A normal print does a lap, stops, steps up, does the next lap. Every step is a
+    seam.
 
-        Don't stop. Let z creep up *while* the path goes round. One line of plastic,
-        from the bed to the top, with no beginning and end in between. Slicers call
-        this vase mode; here it's just what happens when you never reset z.
-        """
-    )
+    Don't stop. Let z creep up *while* the path goes round. One line of plastic,
+    from the bed to the top, with no beginning and end in between. Slicers call
+    this vase mode; here it's just what happens when you never reset z.
+    """)
     return
 
 
@@ -44,15 +42,8 @@ def _():
     return base_radius, height, profile, segments
 
 
-@app.cell(hide_code=True)
-def _():
-    show_code = mo.ui.checkbox(label="Show code")
-    show_code
-    return (show_code,)
-
-
 @app.cell
-def _(base_radius, height, profile, segments, show_code):
+def _(base_radius, height, profile, segments):
     # radius as a function of how far up we are (0 at the bed, 1 at the top).
     # this one function is the whole silhouette.
     def radius_at(fraction):
@@ -86,8 +77,6 @@ def _(base_radius, height, profile, segments, show_code):
                 z=centre.z + fraction * height.value,
             )
         )
-
-    mo.show_code() if show_code.value else None
     return laps, steps
 
 
@@ -99,10 +88,10 @@ def _(steps):
 
 @app.cell(hide_code=True)
 def _(laps, steps):
-    mo.md(
-        f"**{laps} laps, {len(steps)} points, one unbroken path.** "
-        "No travel moves, no retractions, no layer changes — the extruder never stops turning."
-    )
+    mo.md(f"""
+    **{laps} laps, {len(steps)} points, one unbroken path.** "
+        "No travel moves, no retractions, no layer changes — the extruder never stops turning.
+    """)
     return
 
 
@@ -122,22 +111,39 @@ def _(name, save, steps):
 
 @app.cell(hide_code=True)
 def _():
-    mo.md(
-        """
-        ## Things to try
+    mo.md("""
+    ## Work through these
 
-        - Write your own `radius_at`. Anything that returns a number for a number works.
-        - `math.sin(fraction * math.pi * 8)` — ribs.
-        - Segments per lap down to `5` — a pentagonal vessel, still one path.
-        - Add a little to `angle` as `fraction` grows, and the whole thing twists.
+    1. Each profile in turn. Note the height at which the wall leans furthest outward.
+    2. Segments per lap down to `5`. Still one continuous path, now a pentagonal vessel
+       with visibly faceted walls.
+    3. In `radius_at`, add `+ 0.05 * math.sin(fraction * math.pi * 8)` to the vase line —
+       eight ribs up the height.
+    4. Add `+ fraction * math.tau` to `angle` in the loop. The vessel twists once from
+       bottom to top.
+    5. Choose **sphere**, and look at the bottom. `math.sin(0)` is 0, so the first lap has
+       no radius at all — the vessel starts at a point and has nothing to stand on. Add
+       this as the first line of `radius_at`:
 
-        ---
+       ```python
+       if fraction < 0.15:
+           fraction = 0.15
+       ```
 
-        Every lap is stuck to the one below it. Which is what holds it up.
+       The bottom is now a flat disc of real size. This is the first piece of code in the
+       workshop that checks where it is before deciding what to do; day 4 is made of
+       them.
 
-        **So what happens to the bit that sticks out past the lap below?**
-        """
-    )
+    ---
+
+    Each lap is held up by the one below it, so what matters is how far it sits outside
+    that one. Once the wall moves outward by more than about half an extrusion width per
+    lap — roughly 0.7 mm here — part of the bead has nothing underneath it and sags on
+    the way down.
+
+    `e1-silhouette.py` and `e2-vessel.py` are next. Day 3 measures that
+    overhang, then goes past it on purpose.
+    """)
     return
 
 

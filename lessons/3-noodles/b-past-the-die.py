@@ -14,22 +14,20 @@ with app.setup:
 
 @app.cell(hide_code=True)
 def _():
-    mo.md(
-        """
-        # 06 · Past the die
+    mo.md("""
+    # Day 3b · Past the die
 
-        A pasta die makes the same cross-section for the whole length of the noodle.
-        That's what a die *is* — one fixed shape, repeated until someone cuts it.
+    A die produces one cross-section for the whole length of the noodle. That is what a
+    die is, and it is the constraint every shape in `a-cross-section.py` was built under.
 
-        You don't have a die. You can change the shape at any point, and you can change
-        things a die has no access to at all: how much comes out, how fast, whether
-        anything comes out.
+    A printer has no die. The cross-section can change anywhere along the path, and so
+    can things a die has no access to at all: how much plastic comes out, how fast the
+    nozzle moves, whether it extrudes at all.
 
-        So: say *where*. A band of height, a slice of the circle. Everything outside it
-        prints clean. The difference between "it blobbed" and "it blobs here, this much,
-        because I put it there" is the difference between a defect and a decision.
-        """
-    )
+    Four of those are below. Each one takes a **region** — a band of height and a slice
+    of the circle — so it applies somewhere specific instead of everywhere. Outside the
+    region the object prints normally.
+    """)
     return
 
 
@@ -80,15 +78,8 @@ def _():
     return band, feather, height, quirk, radius, sector, segments, strength
 
 
-@app.cell(hide_code=True)
-def _():
-    show_code = mo.ui.checkbox(label="Show code")
-    show_code
-    return (show_code,)
-
-
 @app.cell
-def _(band, feather, height, quirk, radius, sector, segments, show_code, strength):
+def _(band, feather, height, quirk, radius, sector, segments, strength):
     centre = PRINTER.centre()
     laps = max(1, int(height.value / PRINTER.extrusion_height))
     total_points = laps * segments.value
@@ -148,8 +139,6 @@ def _(band, feather, height, quirk, radius, sector, segments, show_code, strengt
 
     if not extruder_is_on:
         steps.append(fc.Extruder(on=True))
-
-    mo.show_code() if show_code.value else None
     return (steps,)
 
 
@@ -175,25 +164,27 @@ def _(name, save, steps):
 
 @app.cell(hide_code=True)
 def _():
-    mo.md(
-        """
-        ## Do this
+    mo.md("""
+    ## Work through these
 
-        Pick two quirks off yesterday's list. Place each one somewhere specific on the
-        same object. Then hand the object to someone and see whether they read it as
-        damage or as a decision.
+    1. Each quirk on its own, full height band, full sector, strength around `0.6`.
+       Note what each one does to the preview.
+    2. Narrow the sector to `0–90`. The same quirk now applies to one side only.
+    3. Turn fade off. A hard edge at the band boundary is a different object from a
+       ramp, and both are choices.
+    4. Place two quirks at stated positions on one object and write down the values you
+       used. Being able to reproduce it is the difference between a result and an
+       accident.
 
-        If they can't tell, that's information about the object, not about them.
+    ---
 
-        ---
+    `amount_at` returns a number for a position: it is what decides where a quirk applies
+    and how strongly. Right now it is a height band and an angle sector. It could depend
+    on anything you can compute from the position — a spiral, a repeating pattern, the
+    distance from a point.
 
-        `amount_at` returns a number for a position. Right now it's a band and a sector.
-        It could be anything — a spiral, a pattern, a rule about where the last quirk
-        was.
-
-        **What would you want it to be?**
-        """
-    )
+    In `e2-place-it.py` you write it yourself.
+    """)
     return
 
 

@@ -9,20 +9,24 @@ every lesson previews at real extrusion size and exports G-code either way.
 
 ## Start
 
-**Windows** — double-click `setup_windows.bat`, then `run_windows.bat`.
+**Windows** — double-click `setup_windows.bat`, then `run.bat`.
 
-**macOS / Linux** — `./setup_mac.sh`, then `./run_mac.sh`.
+**macOS / Linux** — `./setup_mac.sh`, then `./run.sh`.
 
-Either one opens lesson 01 in your browser as an app: move the sliders, watch the shape
-change. Tick **Show code** when you want to see what's underneath.
+Either one opens the first notebook as an app: move the sliders, watch the shape change.
+That is the only notebook that runs that way. From the second one onward the code is on
+screen, because from there on the code is the thing you're working in.
 
-To open a different lesson, or to edit the code rather than drive it:
+For everything else:
 
 ```
-./run_mac.sh 05-the-noodle          # or run_windows.bat 05-the-noodle
-./run_mac.sh 05-the-noodle edit     # code visible and editable
-./run_mac.sh browse                 # marimo's own editor: file browser, sidebar, all lessons
+./run.sh 1 b        # day 1, part b  ("./run.sh 1b" works too)
+./run.sh 3 e1       # day 3, the first exercise
+./run.sh browse     # marimo's editor: file sidebar, all lessons
 ```
+
+Day and notebook are matched by prefix, so as little as is unique will do. `./run.sh 2`
+lists what's in day 2. On Windows it's `run.bat` with the same arguments.
 
 `browse` prints a URL with an access token in the terminal — open that one, not plain
 `localhost`.
@@ -31,45 +35,28 @@ Saved G-code lands in `output/`.
 
 ## The four days
 
-**Day 1 — the path is the object.** There is no model and no slicer.
+Each day has taught notebooks (`a-`, `b-`) with the controls and the explanations, and
+then exercises (`e1-`, `e2-`, ...) which are stripped to one editable thing each. The
+`brief.md` in each folder is the day's plan: steps, a parameter table, what to look at,
+and what to watch for at the machine.
 
-| | |
-|---|---|
-| [01-the-path](lessons/01-the-path) | Points, in order. Read the G-code they turn into. |
-| [02-parametric](lessons/02-parametric) | A loop writes the points, so a hundred cost the same as four. |
+| | | |
+|---|---|---|
+| **Day 1** | [Tiles](lessons/1-tiles) | Points in order, then a loop that writes them. One flat layer: a tile, a lattice, a panel. |
+| **Day 2** | [Vessels](lessons/2-vessels) | Extrusion width, layer height and the bed. z climbs continuously, so one bead runs from the bed to the rim. |
+| **Day 3** | [Noodles](lessons/3-noodles) | A die is one fixed cross-section. A printer isn't — so flow, position and extrusion can change anywhere along the path. Settings go out of spec on purpose. |
+| **Day 4** | [Studio](lessons/4-studio) | Code that reacts to where it is: an attractor point, a spout, a flat face. Then an empty template and the rest of the day. |
 
-**Day 2 — the machine has properties.** Width, height, speed, a bed with edges.
+Day 3 is what the workshop is for. Days 1 and 2 make it possible; day 4 is where you find
+out whether it was worth doing.
 
-| | |
-|---|---|
-| [03-the-machine](lessons/03-the-machine) | Extrusion width and layer height. The path gets a body. |
-| [04-one-continuous-path](lessons/04-one-continuous-path) | z climbs while the path goes round. One unbroken bead. |
-
-**Day 3 — break it on purpose.** The hinge of the workshop.
-
-| | |
-|---|---|
-| [05-the-noodle](lessons/05-the-noodle) | Code actual pasta. Eight named shapes, one loop, different numbers. |
-| [06-quirks-on-purpose](lessons/06-quirks-on-purpose) | Past the die: bulge, ripple, flare, threads — placed on purpose. |
-
-**Day 4 — compose.**
-
-| | |
-|---|---|
-| [07-modulation](lessons/07-modulation) | Silhouette × cross-section × twist × bumps. They stack. |
-| [08-studio](lessons/08-studio) | Empty template, wired up. Build something. |
-
-Each folder has a `brief.md` — the move being made, what to do, and the question to leave
-on. [08-studio](lessons/08-studio/brief.md) also has notes for whoever runs the closing
-session.
-
-[`reference/bauble.py`](reference/bauble.py) is a finished piece using everything above,
-worth reading once lesson 07 makes it legible.
+[`reference/bauble.py`](reference/bauble.py) is a finished piece using everything above.
+It should read as ordinary by the end of day 3.
 
 ## Layout
 
 ```
-lessons/     eight lessons, one notebook + one brief each
+lessons/     four days: taught notebooks, exercises, and a brief
 reference/   a worked example
 workshop/    the printer profile and the marimo-compatible plot, shared by every lesson
 output/      your G-code

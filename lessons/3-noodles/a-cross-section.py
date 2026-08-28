@@ -11,11 +11,11 @@ with app.setup:
 
     from workshop import PRINTER, plot_steps, save_gcode
 
-    # Pasta is extruded: dough pushed through a die. The die's shape is the
-    # cross-section, and the shape you get is that cross-section dragged along a line.
-    # A 3D printer is the same machine with a worse die and a longer noodle.
+    # Pasta is extruded: dough pushed through a die. The die is the cross-section, and
+    # the noodle is that cross-section dragged along a line. A die cannot change partway
+    # along its length — that constraint is the subject of b-past-the-die.py.
     #
-    # Every shape below is the same code with different numbers.
+    # All eight shapes below are the same loop with different numbers.
     PASTA = {
         "Ziti — plain tube": dict(
             length=60, radius=9, ridges=0, ridge_depth=0.0, rings=0, ring_depth=0.0,
@@ -54,19 +54,17 @@ with app.setup:
 
 @app.cell(hide_code=True)
 def _():
-    mo.md(
-        """
-        # 05 · Noodles
+    mo.md("""
+    # Day 3a · The die
 
-        Pasta is extruded. Dough gets pushed through a metal die and comes out as a
-        continuous shape that then gets cut. The die is a cross-section; the noodle is
-        that cross-section dragged along a line.
+    Pasta is extruded: dough is pushed through a metal die and comes out as a continuous
+    shape, which is then cut. The die is a cross-section, and the noodle is that
+    cross-section dragged along a line.
 
-        Which is what you've been doing since lesson 04.
-
-        Pick one and take it apart.
-        """
-    )
+    Yesterday's vessel was the same operation — a circle dragged upward. The eight shapes
+    in the dropdown are all one loop; only the numbers differ. Pick one and find out
+    which number was doing the work.
+    """)
     return
 
 
@@ -108,9 +106,9 @@ def _(shape):
                     ridges,
                     ridge_depth,
                     mo.md(
-                        "A wave added to the radius that goes round the tube a whole number "
-                        "of times. `14` shallow ones is rigatoni; `3` deep ones is fusilli. "
-                        "This is the die."
+                        "A wave added to the radius, repeating a whole number of times "
+                        "around the tube. `14` shallow ones is rigatoni; `3` deep ones is "
+                        "fusilli. This is the die: fixed for the whole length."
                     ),
                 ]
             ),
@@ -140,10 +138,10 @@ def _(shape):
                     coil,
                     coil_turns,
                     mo.md(
-                        "So far the tube has gone straight up. It doesn't have to. **Bend** "
-                        "leans the axis sideways as it rises; **coil** sends it round a helix.\n\n"
-                        "The cross-section code doesn't change at all — you're only moving "
-                        "where its centre is."
+                        "So far the tube has gone straight up. **Bend** leans the axis "
+                        "sideways as it rises; **coil** sends it round a helix.\n\n"
+                        "The cross-section code is untouched — only the position of its "
+                        "centre changes. Day 4 is built on that separation."
                     ),
                 ]
             ),
@@ -166,13 +164,6 @@ def _(shape):
     )
 
 
-@app.cell(hide_code=True)
-def _():
-    show_code = mo.ui.checkbox(label="Show code")
-    show_code
-    return (show_code,)
-
-
 @app.cell
 def _(
     bend,
@@ -185,7 +176,6 @@ def _(
     ring_depth,
     rings,
     segments,
-    show_code,
     slant,
     twist,
 ):
@@ -236,8 +226,6 @@ def _(
                 z=z,
             )
         )
-
-    mo.show_code() if show_code.value else None
     return laps, steps
 
 
@@ -286,26 +274,27 @@ def _(name, save, steps):
 
 @app.cell(hide_code=True)
 def _():
-    mo.md(
-        """
-        ## Do this
+    mo.md("""
+    ## Work through these
 
-        Make one that isn't on the list and give it a name.
+    1. Rigatoni. Raise ridge depth until the readout warns that the valleys are cutting
+       deeper than the wall is thick, and look at what the preview does there.
+    2. From rigatoni, add twist. Nothing structural changed and it is now fusilli.
+    3. Bend, then coil. The cross-section code is untouched; only the centre moves.
+    4. Push bend and coil until the noodle stops standing up. The readout gives the
+       overhang per lap as a percentage of extrusion width. Past about 50% there is
+       nothing under the outer edge of the bead.
+    5. Segments per lap to `5`, on any shape.
 
-        Not a variation on rigatoni — something the shapes above can't quite be. Push
-        bend and coil until the noodle stops standing up. Turn ridge depth past the
-        point where the ridges meet in the middle. Set segments to `5` and see what a
-        pentagonal bucatini is.
+    ---
 
-        ---
+    Each shape in the dropdown exists because a factory can extrude it, cut it, dry it
+    without cracking, box it without breaking, and cook it evenly. Those are real
+    constraints on a real product and none of them apply here.
 
-        Every shape in that dropdown exists because a factory can extrude it, cut it,
-        dry it without cracking, box it without breaking, and cook it evenly. Those are
-        real constraints — they're just not yours.
-
-        **What can you make that a pasta die can't?**
-        """
-    )
+    The one constraint that does apply is the die itself: a single fixed cross-section
+    for the whole length. `b-past-the-die.py` removes it.
+    """)
     return
 
 

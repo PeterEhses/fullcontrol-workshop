@@ -13,4 +13,4 @@ echo "Installing dependencies (this downloads Python too, if needed)..."
 uv sync
 
 echo
-echo "Done. Now run:  ./run_mac.sh"
+echo "Done. Now run:  ./run.sh"

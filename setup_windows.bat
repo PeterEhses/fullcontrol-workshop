@@ -19,5 +19,5 @@ if errorlevel 1 (
 )
 
 echo.
-echo Done. Now double-click run_windows.bat
+echo Done. Now double-click run.bat
 pause

@@ -16,12 +16,14 @@ with app.setup:
 def _():
     mo.md(
         """
-        # 08 · Studio
+    # Day 4 · Studio
 
-        Everything is wired: printer profile, preview, export. The generation cell below
-        is yours.
+    Printer profile, preview, build-volume check and export are wired up. The generation
+    cell below is empty.
 
-        Make something that uses at least one quirk from day 3 on purpose.
+    There is no example to work from today and no product type given. Build something
+    that uses at least one quirk from day 3 deliberately — placed where you want it, at
+    a value you can state.
         """
     )
     return

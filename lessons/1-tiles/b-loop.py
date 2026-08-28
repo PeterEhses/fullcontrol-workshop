@@ -15,10 +15,13 @@ with app.setup:
 @app.cell(hide_code=True)
 def _():
     mo.md("""
-    # 02 · Let the loop type it
+    # Day 1b · The loop writes the points
 
-    The same four-corner idea, except the corners are calculated. Now a hundred
-    points costs the same as four.
+    The same idea as the four corners, except each position is calculated instead of
+    typed. A hundred points now costs the same as four, so the thing you are designing
+    is the rule that produces them.
+
+    The code is below the plot. Read it once before you move the sliders.
     """)
     return
 
@@ -35,15 +38,8 @@ def _():
     return radius_growth, resolution, rise, start_radius, turns
 
 
-@app.cell(hide_code=True)
-def _():
-    show_code = mo.ui.checkbox(label="Show code")
-    show_code
-    return (show_code,)
-
-
 @app.cell
-def _(radius_growth, resolution, rise, show_code, start_radius, turns):
+def _(radius_growth, resolution, rise, start_radius, turns):
     centre = PRINTER.centre()
     points_per_turn = resolution.value
 
@@ -61,8 +57,6 @@ def _(radius_growth, resolution, rise, show_code, start_radius, turns):
         z = centre.z + turn * rise.value
 
         steps.append(fc.Point(x=x, y=y, z=z))
-
-    mo.show_code() if show_code.value else None
     return (steps,)
 
 
@@ -75,7 +69,7 @@ def _(steps):
 @app.cell(hide_code=True)
 def _(steps):
     mo.md(f"""
-    **{len(steps)} points.** You typed none of them.
+    **{len(steps)} points**, from five slider values and one loop.
     """)
     return
 
@@ -83,21 +77,25 @@ def _(steps):
 @app.cell(hide_code=True)
 def _():
     mo.md("""
-    ## Things to try
+    ## Work through these
 
-    - Rise per turn at `0` — a flat spiral, one layer, no height at all.
-    - Radius growth negative — it winds inward instead. What happens when the
-      radius passes zero?
-    - Points per turn at `3`, `4`, `6` — the circle stops being a circle.
-    - Two loops instead of one, the second offset by half a turn.
+    1. Rise per turn to `0` — a flat spiral, one layer. This is a tile.
+    2. Radius growth negative — the spiral winds inward. Keep going: past zero radius
+       it comes out the other side and unwinds, offset by half a turn.
+    3. Points per turn to `3`, then `4`, then `6`. A circle drawn with six points is a
+       hexagon; the loop has not changed, only how often it stops.
+    4. In the code, add a second `steps.append(...)` inside the loop with `angle + math.pi`
+       — two spirals, half a turn apart, in one path.
 
     ---
 
-    Turn the rise down to `0.05` and the turns up to `60`. The plot still looks
-    fine.
+    Set rise per turn to `0.05` and turns to `60`. The preview draws it without
+    complaint. Those laps are 0.05 mm apart, and this printer lays a bead 0.48 mm tall,
+    so each lap would be buried in the nine below it and the nozzle would drag through
+    all of them.
 
-    **The layers are now 0.05 mm apart and the nozzle is 0.4 mm across. What would
-    the printer do with that?**
+    The preview does not know that. `2-vessels/a-extrusion.py` is where the bead gets a
+    width and a height.
     """)
     return
 

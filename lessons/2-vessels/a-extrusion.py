@@ -16,13 +16,14 @@ with app.setup:
 def _():
     mo.md(
         f"""
-        # 03 · The machine has properties
+        # Day 2a · Width, height, and the bed
 
-        Lesson 02 drew lines. Lines have no thickness. What the printer lays down does:
-        a squashed sausage about **{PRINTER.extrusion_width} mm** wide and
-        **{PRINTER.extrusion_height} mm** tall.
+        Yesterday's path was a line, and a line has no thickness. What the printer lays
+        down is a bead roughly **{PRINTER.extrusion_width} mm** wide and
+        **{PRINTER.extrusion_height} mm** tall, pressed flat against whatever is under it.
 
-        Same spiral. This time it has volume, and a bed it has to fit on.
+        Same spiral as yesterday. The preview now draws it at that real size, and the
+        readout below checks it against the build volume.
         """
     )
     return
@@ -46,11 +47,13 @@ def _():
                     extrusion_height,
                     mo.md(
                         """
-                        **Extrusion width** is wider than the nozzle, because the plastic
-                        gets pressed sideways as it's pushed into the layer below.
+                        **Extrusion width** is wider than the nozzle bore, because the
+                        plastic is pressed sideways as it goes down. A workable bead is
+                        roughly 2 to 4 times as wide as it is tall; this profile is
+                        1.45 by 0.48, about 3 to 1.
 
-                        **Layer height** is also the rise per turn — there is no separate
-                        setting. Each lap sits directly on the last one.
+                        **Layer height** doubles as the rise per turn here — there is no
+                        separate setting. Each lap sits directly on the one below it.
                         """
                     ),
                 ]
@@ -62,15 +65,8 @@ def _():
     return extrusion_height, extrusion_width, radius_growth, start_radius, turns
 
 
-@app.cell(hide_code=True)
-def _():
-    show_code = mo.ui.checkbox(label="Show code")
-    show_code
-    return (show_code,)
-
-
 @app.cell
-def _(extrusion_height, extrusion_width, radius_growth, show_code, start_radius, turns):
+def _(extrusion_height, extrusion_width, radius_growth, start_radius, turns):
     printer = PRINTER.but(
         extrusion_width=extrusion_width.value,
         extrusion_height=extrusion_height.value,
@@ -94,8 +90,6 @@ def _(extrusion_height, extrusion_width, radius_growth, show_code, start_radius,
                 z=centre.z + turn * printer.extrusion_height,
             )
         )
-
-    mo.show_code() if show_code.value else None
     return printer, steps
 
 
@@ -146,12 +140,17 @@ def _():
         """
         ---
 
-        Set the layer height to `0.1` while leaving the extrusion width at `1.45`. The
-        preview draws wide flat ribbons stacked very close together. It looks plausible.
-        It will not print — there is nowhere for that much plastic to go.
+        Set layer height to `0.1` and extrusion width to `1.45`. The preview draws wide
+        flat ribbons stacked close together and reports no problem. On a machine there is
+        nowhere for that much plastic to go: the bead is fourteen times wider than it is
+        tall, so it spreads sideways into the previous lap and the nozzle ploughs through
+        what it just laid.
 
-        **The preview will happily show you things the machine cannot do.**
-        That gap is where the next two days live.
+        The preview checks the build volume. It does not check whether the extrusion is
+        physically possible — it has no model of the plastic. Keep that distinction; day 3
+        works in the gap.
+
+        Next: `b-continuous.py`, where z stops stepping and starts climbing.
         """
     )
     return
