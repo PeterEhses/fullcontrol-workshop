@@ -1,7 +1,7 @@
 [project]
 name = "fullcontrol-workshop"
 version = "1.0.0"
-description = "A four-day workshop on designing 3D printer toolpaths directly, in Python."
+description = "Workshop notebooks for writing 3D printer toolpaths in Python with FullControl."
 readme = "README.md"
 requires-python = ">=3.13"
 dependencies = [

@@ -15,12 +15,11 @@ with app.setup:
 @app.cell(hide_code=True)
 def _():
     mo.md("""
-    # Day 4 · Exercise 1 — write the condition
+    # Day 4 - Exercise 1: write the condition
 
-    `push_at` is called for every point, with where that point was about to go. It returns
-    how many millimetres to move the wall outward there — negative moves it inward.
-
-    It returns 0, so the vessel is a plain cylinder 60 mm tall with a 20 mm radius. The
+    `push_at` is called for every point with where that point was about to go, and returns
+    how many millimetres to move the wall outward there; negative moves it inward. It
+    returns 0, so the vessel is a plain cylinder 60 mm tall with a 20 mm radius. The
     attractor point sits at `target`, 4 mm off the wall at half height.
 
     1. Push the wall out by 8 mm everywhere. (Return `8.0` — a condition that is always

@@ -15,21 +15,17 @@ with app.setup:
 @app.cell(hide_code=True)
 def _():
     mo.md("""
-    # Day 2 · Exercise 1 — fill in the silhouette
+    # Day 2 - Exercise 1: fill in the silhouette
 
     `radius_at` is called once per point. `fraction` is 0 at the bed and 1 at the rim, and
-    what comes back multiplies the radius.
-
-    It returns `1.0` for every height, which is a cylinder. Make it produce each of these
-    in turn:
+    what comes back multiplies the radius. It returns `1.0` at every height, which is a
+    cylinder. Make it produce each of these in turn:
 
     1. A cone: full width at the bed, nothing at the top.
     2. The other cone: nothing at the bed, full width at the top.
-    3. A barrel: widest at half height, narrower at both ends. (`math.sin(fraction *
-       math.pi)` is 0 at both ends and 1 in the middle.)
+    3. A barrel: widest at half height, narrower at both ends.
     4. A step: 60% of the radius below half height, full radius above it.
-    5. A stack of four steps, without writing four `if`s. (`int(fraction * 4)` counts
-       0, 1, 2, 3 as you climb — and 4 at the very top, on the last point only.)
+    5. A stack of four steps, without writing four `if`s. (hint: `int(fraction * 4)`)
 
     The vessel is 70 mm tall with a 25 mm radius.
 
@@ -39,15 +35,13 @@ def _():
     return
 
 
-@app.cell
-def _():
-    def radius_at(fraction):
-        return 1.0
-    return (radius_at,)
+@app.function
+def radius_at(fraction):
+    return 1.0
 
 
 @app.cell(hide_code=True)
-def _(radius_at):
+def _():
     _height = 70
     _radius = 25
     _segments = 64

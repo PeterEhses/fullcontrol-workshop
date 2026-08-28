@@ -55,7 +55,7 @@ with app.setup:
 @app.cell(hide_code=True)
 def _():
     mo.md("""
-    # Day 3a · The die
+    # Day 3a - The die
 
     Pasta is extruded: dough is pushed through a metal die and comes out as a continuous
     shape, which is then cut. The die is a cross-section, and the noodle is that

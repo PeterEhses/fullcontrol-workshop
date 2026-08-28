@@ -15,15 +15,12 @@ with app.setup:
 @app.cell(hide_code=True)
 def _():
     mo.md("""
-    # Day 3 · Exercise 3 — a shape that isn't on the list
+    # Day 3 - Exercise 3: a shape that isn't on the list
 
-    Three cells, all yours: the die, where the quirk applies, and the loop.
-
-    `section_at` gets `round_the_tube` **and** `along`, so unlike a real die it can change
-    down the length of the noodle.
-
-    Make something the dropdown couldn't, with one quirk placed somewhere you chose.
-    Write down the numbers if you want it back.
+    Three cells, all yours: the die, where the quirk applies, and the loop. `section_at`
+    gets `round_the_tube` as well as `along`, so unlike a real die it can change down the
+    length of the noodle. Make something the dropdown couldn't, with one quirk placed
+    where you chose. Write the numbers down if you want it back.
     """)
     return
 
@@ -89,7 +86,7 @@ def _(steps):
     _ys = [p.y for p in _points]
 
     mo.md(
-        "### ⚠️ This runs off the bed."
+        "### This runs off the bed."
         if min(_xs) < 0 or max(_xs) > PRINTER.bed_width or min(_ys) < 0 or max(_ys) > PRINTER.bed_depth
         else f"{max(_xs) - min(_xs):.0f} × {max(_ys) - min(_ys):.0f} × {max(p.z for p in _points):.0f} mm"
     )

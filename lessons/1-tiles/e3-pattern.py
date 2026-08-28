@@ -15,38 +15,32 @@ with app.setup:
 @app.cell(hide_code=True)
 def _():
     mo.md("""
-    # Day 1 · Exercise 3 — repeat it
+    # Day 1 - Exercise 3: repeat it
 
-    Your tile, repeated across a grid. `cell_shape` gives one cell; the loop below places
-    it `columns` × `rows` times.
-
-    The nozzle keeps extruding between cells, so the connecting lines are part of the
-    object. `fc.Extruder(on=False)` before a move and `on=True` after it would leave the
-    gaps empty instead.
-
-    Design a panel, a lattice, or a grille.
+    Your tile, repeated across a grid. `cell_shape` gives one cell; the loop places it
+    `columns` × `rows` times. The nozzle keeps extruding between cells, so the connecting
+    lines are part of the object — `fc.Extruder(on=False)` before a move and `on=True`
+    after would leave the gaps empty. Design a panel / lattice.
     """)
     return
 
 
+@app.function
+def cell_shape(size):
+    """One cell, as (x, y) offsets from that cell's centre."""
+    half = size / 2
+
+    return [
+        (-half, -half),
+        (half, -half),
+        (half, half),
+        (-half, half),
+        (-half, -half),
+    ]
+
+
 @app.cell
 def _():
-    def cell_shape(size):
-        """One cell, as (x, y) offsets from that cell's centre."""
-        half = size / 2
-
-        return [
-            (-half, -half),
-            (half, -half),
-            (half, half),
-            (-half, half),
-            (-half, -half),
-        ]
-    return (cell_shape,)
-
-
-@app.cell
-def _(cell_shape):
     columns = 4
     rows = 4
     spacing = 30
@@ -79,7 +73,7 @@ def _(steps):
     _ys = [p.y for p in steps if isinstance(p, fc.Point)]
 
     mo.md(
-        "### ⚠️ This runs off the bed."
+        "### This runs off the bed."
         if min(_xs) < 0 or max(_xs) > PRINTER.bed_width or min(_ys) < 0 or max(_ys) > PRINTER.bed_depth
         else f"{max(_xs) - min(_xs):.0f} × {max(_ys) - min(_ys):.0f} mm"
     )

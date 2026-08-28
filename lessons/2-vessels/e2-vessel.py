@@ -15,14 +15,12 @@ with app.setup:
 @app.cell(hide_code=True)
 def _():
     mo.md("""
-    # Day 2 · Exercise 2 — a vessel of your own
+    # Day 2 - Exercise 2: a vessel of your own
 
-    Both cells are yours: the silhouette, and the loop that uses it.
-
-    A silhouette no dropdown offers. Print it if there's a machine.
-
-    The readout under the plot gives the steepest outward step per lap. Past half an
-    extrusion width the bead has nothing under its outer edge.
+    Both cells are yours: the silhouette and the loop that uses it. Make a silhouette no
+    dropdown offers, and print it if there's a machine. The readout under the plot gives
+    the steepest outward step per lap — past half an extrusion width the bead has nothing
+    under its outer edge.
     """)
     return
 

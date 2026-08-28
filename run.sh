@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # ./run.sh              day 1, part A, as an app
 # ./run.sh 1 b          day 1, part b  (./run.sh 1b works too)
-# ./run.sh 3 e          day 3, the exercise
+# ./run.sh 3 e1         day 3, the first exercise
 # ./run.sh browse       the marimo editor with the file sidebar
 #
 # Names are matched by prefix, so as long as it's unique, as little as you like.

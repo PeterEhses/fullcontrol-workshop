@@ -15,13 +15,11 @@ with app.setup:
 @app.cell(hide_code=True)
 def _():
     mo.md("""
-    # Day 1b · The loop writes the points
+    # Day 1b - The loop writes the points
 
     The same idea as the four corners, except each position is calculated instead of
-    typed. A hundred points now costs the same as four, so the thing you are designing
-    is the rule that produces them.
-
-    The code is below the plot. Read it once before you move the sliders.
+    typed. A hundred points costs the same as four.
+    Code is below the sliders; read it before moving them.
     """)
     return
 
@@ -90,12 +88,10 @@ def _():
     ---
 
     Set rise per turn to `0.05` and turns to `60`. The preview draws it without
-    complaint. Those laps are 0.05 mm apart, and this printer lays a bead 0.48 mm tall,
-    so each lap would be buried in the nine below it and the nozzle would drag through
-    all of them.
-
-    The preview does not know that. `2-vessels/a-extrusion.py` is where the bead gets a
-    width and a height.
+    complaint. Those laps are 0.05 mm apart and this printer lays a bead 0.48 mm tall, so
+    each lap would be buried in the nine below it and the nozzle would drag through all of
+    them. The preview does not know that. `2-vessels/a-extrusion.py` is where the bead
+    gets a width and a height.
     """)
     return
 

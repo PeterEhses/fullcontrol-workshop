@@ -14,9 +14,8 @@ with app.setup:
 
 @app.cell(hide_code=True)
 def _():
-    mo.md(
-        """
-    # Day 4 · Studio
+    mo.md("""
+    # Day 4 - Studio
 
     Printer profile, preview, build-volume check and export are wired up. The generation
     cell below is empty.
@@ -24,8 +23,7 @@ def _():
     There is no example to work from today and no product type given. Build something
     that uses at least one quirk from day 3 deliberately — placed where you want it, at
     a value you can state.
-        """
-    )
+    """)
     return
 
 
@@ -37,11 +35,11 @@ def _():
     knob = mo.ui.slider(0.0, 1.0, value=0.5, step=0.01, label="Spare knob")
 
     mo.vstack([height, radius, segments, knob])
-    return height, knob, radius, segments
+    return height, radius, segments
 
 
 @app.cell
-def _(height, knob, radius, segments):
+def _(height, radius, segments):
     centre = PRINTER.centre()
     laps = max(1, int(height.value / PRINTER.extrusion_height))
     total_points = laps * segments.value
@@ -55,9 +53,9 @@ def _(height, knob, radius, segments):
         r = radius.value
         z = centre.z + fraction * height.value
 
-        # ↓ your work goes here ↓
+        # your work goes here
 
-        # ↑ your work goes here ↑
+        # end of your work
 
         steps.append(fc.Point(x=centre.x + r * math.cos(angle), y=centre.y + r * math.sin(angle), z=z))
     return (steps,)
@@ -79,9 +77,9 @@ def _(steps):
     _too_tall = max(_zs) > PRINTER.max_height
 
     mo.md(
-        "### ⚠️ This runs outside the build volume."
+        "### This runs outside the build volume."
         if (_off_bed or _too_tall)
-        else f"{max(_xs) - min(_xs):.0f} × {max(_ys) - min(_ys):.0f} × {max(_zs):.0f} mm · {len(steps)} steps"
+        else f"{max(_xs) - min(_xs):.0f} × {max(_ys) - min(_ys):.0f} × {max(_zs):.0f} mm - {len(steps)} steps"
     )
     return
 
@@ -102,25 +100,23 @@ def _(name, save, steps):
 
 @app.cell(hide_code=True)
 def _():
-    mo.md(
-        """
-        ---
+    mo.md("""
+    ---
 
-        **Things you have available**
+    Things you have available:
 
-        `PRINTER.extrusion_width`, `.extrusion_height`, `.initial_z`, `.centre()`,
-        `.bed_width`, `.bed_depth`, `.max_height`
+    `PRINTER.extrusion_width`, `.extrusion_height`, `.initial_z`, `.centre()`,
+    `.bed_width`, `.bed_depth`, `.max_height`
 
-        `PRINTER.but(print_speed=3000)` — a copy with something changed, for
-        `plot_steps(steps, plot_controls(printer))` and `save_gcode(steps, name, printer)`.
+    `PRINTER.but(print_speed=3000)` — a copy with something changed, for
+    `plot_steps(steps, plot_controls(printer))` and `save_gcode(steps, name, printer)`.
 
-        Mid-path changes go into `steps` alongside the points:
+    Mid-path changes go into `steps` alongside the points:
 
-        - `fc.ExtrusionGeometry(width=…, height=…)` — flow from here on
-        - `fc.Printer(print_speed=…)` — speed from here on
-        - `fc.Extruder(on=False)` — stop extruding, keep moving
-        """
-    )
+    - `fc.ExtrusionGeometry(width=..., height=...)` — flow from here on
+    - `fc.Printer(print_speed=...)` — speed from here on
+    - `fc.Extruder(on=False)` — stop extruding, keep moving
+    """)
     return
 
 

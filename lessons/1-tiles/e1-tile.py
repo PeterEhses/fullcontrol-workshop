@@ -13,12 +13,10 @@ with app.setup:
 @app.cell(hide_code=True)
 def _():
     mo.md("""
-    # Day 1 · Exercise 1 — a tile
+    # Day 1 - Exercise 1: a tile
 
-    Below is a list of coordinates, in millimetres from the middle of the bed. The nozzle
-    visits them in the order they are written.
-
-    Change them. Add more. Design a tile.
+    A list of coordinates in millimetres from the middle of the bed. The nozzle visits
+    them in the order written. Change them, add more, design a tile.
     """)
     return
 

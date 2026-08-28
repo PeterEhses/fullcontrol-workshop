@@ -1,7 +1,7 @@
 @echo off
 REM Double-click       day 1, part A, as an app
 REM run.bat 1 b        day 1, part b  (run.bat 1b works too)
-REM run.bat 3 e        day 3, the exercise
+REM run.bat 3 e1       day 3, the first exercise
 REM run.bat browse     the marimo editor with the file sidebar
 REM
 REM Names are matched by prefix, so as long as it's unique, as little as you like.

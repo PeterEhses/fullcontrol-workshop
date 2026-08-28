@@ -15,7 +15,7 @@ with app.setup:
 @app.cell(hide_code=True)
 def _():
     mo.md("""
-    # Day 3 · Exercise 2 — put it somewhere
+    # Day 3 - Exercise 2: put it somewhere
 
     `amount_at` decides how strongly the bulge applies. `along` runs 0 at the bed to 1 at
     the top; `degrees` runs 0 to 360 around the tube. Return 0 for none and 1 for full.
@@ -25,7 +25,7 @@ def _():
     1. Everywhere. (Return `1.0`.)
     2. Only in the top third.
     3. Only on one side — between 0 and 90 degrees.
-    4. Only in the top third **and** only on that side.
+    4. Only in the top third and only on that side.
     5. Fading in from nothing at half height to full at the top, instead of switching on.
 
     Each one is a different object. Save the ones worth keeping.

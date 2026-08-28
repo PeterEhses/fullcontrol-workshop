@@ -15,18 +15,16 @@ with app.setup:
 @app.cell(hide_code=True)
 def _():
     mo.md("""
-    # Day 4a · Conditions
+    # Day 4a - Conditions
 
-    You have been stacking modulations since day 3. Fusilli is ridges plus twist.
-    Cavatappi is ridges plus twist plus a coiled axis. Independent adjustments to the
-    same two numbers, in one loop, none of them aware of each other.
+    You have been stacking modulations since day 3 — fusilli is ridges plus twist,
+    cavatappi is ridges plus twist plus a coiled axis. Independent adjustments to the same
+    two numbers, in one loop, none of them aware of each other. Most are smooth functions
+    of position: give them a height and an angle and they return the same number every
+    time, anywhere on the object.
 
-    Most of those are smooth functions of position: give them a height and an angle and
-    they return the same number every time, everywhere on the object.
-
-    Four here, and each asks a different question before it decides. The four questions
-    are in one cell below; the loop that applies them is in the next one and is the same
-    loop you have had since day 2.
+    The four below each ask a question before deciding. They are in one cell; the loop
+    that applies them is in the next one and is the loop you have had since day 2.
     """)
     return
 
@@ -60,7 +58,7 @@ def _():
     mo.accordion(
         {
             "Base shape": mo.vstack([height, radius, segments]),
-            "1 · Attractor — how close is this to a point in space?": mo.vstack(
+            "1 - Attractor — how close is this to a point in space?": mo.vstack(
                 [
                     attractor_on,
                     attractor_angle,
@@ -81,7 +79,7 @@ def _():
                     ),
                 ]
             ),
-            "2 · Spout — is this inside the region I care about?": mo.vstack(
+            "2 - Spout — is this inside the region I care about?": mo.vstack(
                 [
                     spout_on,
                     spout_angle,
@@ -93,13 +91,13 @@ def _():
                         "You wrote this one on day 3. `amount_at` there was a height band and "
                         "an angle sector, and it drove flow and extrusion; here the identical "
                         "test drives shape instead.\n\n"
-                        "The one new thing is that a single condition drives **two** "
-                        "properties: the wall pushes out and the rim lifts together. That is "
-                        "what makes it read as a spout rather than as a bulge with a bump on it."
+                        "The new thing is that one condition drives two properties: the wall "
+                        "pushes out and the rim lifts together. That is what makes it read as a "
+                        "spout rather than a bulge with a bump on it."
                     ),
                 ]
             ),
-            "3 · Flat face — did this end up somewhere I don't want?": mo.vstack(
+            "3 - Flat face — did this end up somewhere I don't want?": mo.vstack(
                 [
                     flat_on,
                     flat_offset,
@@ -112,13 +110,13 @@ def _():
                     ),
                 ]
             ),
-            "4 · Overhang limiter — what did the path already do?": mo.vstack(
+            "4 - Overhang limiter — what did the path already do?": mo.vstack(
                 [
                     limit_on,
                     limit_share,
                     mo.md(
                         "The other three ask about the point in front of them. This one looks "
-                        "**backwards**: it compares this point to the one directly underneath "
+                        "backwards: it compares this point to the one directly underneath "
                         "it, a full lap ago, and refuses to let the wall step out further than "
                         "the bead can bridge.\n\n"
                         "Turn the attractor up until it overhangs badly, then switch this on. "
@@ -291,9 +289,9 @@ def _(laps, segments, steps):
     _notes = [f"**{max(_xs) - min(_xs):.0f} × {max(_ys) - min(_ys):.0f} × {_z:.0f} mm**, {laps} laps."]
 
     if min(_xs) < 0 or max(_xs) > PRINTER.bed_width or min(_ys) < 0 or max(_ys) > PRINTER.bed_depth:
-        _notes.append("### ⚠️ It runs off the bed.")
+        _notes.append("### It runs off the bed.")
     if _z > PRINTER.max_height:
-        _notes.append(f"### ⚠️ Taller than the {PRINTER.max_height} mm the gantry allows.")
+        _notes.append(f"### Taller than the {PRINTER.max_height} mm the gantry allows.")
 
     _notes.append(
         f"Steepest **outward** movement: **{_steepest:.2f} mm per lap** against a "
@@ -331,9 +329,9 @@ def _():
        reach no longer spans the gap. The condition is still running, and never fires.
     3. Attractor strength negative: a dent instead of a bulge.
     4. Reach `6`, strength `15`. The readout says about `0.87` mm per lap, past the
-       `0.72` a bead this wide can bridge. Now switch the **limiter** on: the bulge is
-       still there, the readout drops to exactly `0.72`, and the wall gets to the same
-       place over more laps.
+       `0.72` a bead this wide can bridge. Switch the limiter on: the bulge is still
+       there, the readout drops to exactly `0.72`, and the wall gets to the same place
+       over more laps.
     5. Spout alone. Narrow it to `20°`, then widen it to `160°`. Somewhere in between it
        stops being a spout and becomes an oval vessel.
     6. Flat face on, spout on, spout angle `90` so it points at the plane. The spout gets

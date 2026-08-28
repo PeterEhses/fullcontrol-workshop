@@ -13,11 +13,11 @@ with app.setup:
 @app.cell(hide_code=True)
 def _():
     mo.md("""
-    # Day 1a · Five points
+    # Day 1a - Five points
 
-    A square tile outline: four corners, then back to the first one. The printer visits
-    the points in the order you list them and extrudes on the way. There is no model and
-    no slicer in between — the list of positions is the file.
+    A square tile outline: four corners, then back to the first. The printer visits the
+    points in the order you list them, extruding on the way. No model and no slicer in
+    between.
     """)
     return
 
@@ -82,8 +82,8 @@ def _(steps):
         + "\n".join(_moves)
         + "\n```\n\n"
         + "One line per point. `X` and `Y` are where to go, `Z` is how high, `E` is how much "
-        + "plastic to push out on the way there. Compare the numbers here against the corner "
-        + "coordinates above — each point became one line."
+        + "plastic to push out on the way there. Check them against the corner coordinates "
+        + "above: each point became one line."
     )
     return
 
@@ -94,9 +94,10 @@ def _():
     ---
 
     Four corners, four lines of code. A round tile at the same spacing between points
-    needs about a hundred, and a lattice of nine tiles needs nine times that.
+    needs about a hundred, and a lattice of nine tiles needs nine times that. Thats a lot of work
+    to type out by hand.
 
-    `b-loop.py` writes them with a loop.
+    `b-loop.py` writes them with a loop instead.
     """)
     return
 

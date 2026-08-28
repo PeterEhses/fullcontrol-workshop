@@ -15,18 +15,17 @@ with app.setup:
 @app.cell(hide_code=True)
 def _():
     mo.md("""
-    # Day 1 · Exercise 2 — the same tile, from a loop
+    # Day 1 - Exercise 2: the same tile, from a loop
 
-    `offset_at` is called once for each point, with `i` counting from 0. It returns where
-    that point goes, in millimetres from the middle of the bed.
-
-    Right now it draws a circle of 60 points.
+    `offset_at` is called once per point, with `i` counting from 0, and returns where that
+    point goes in millimetres from the middle of the bed. Right now it draws a circle of
+    60 points.
 
     1. Make the circle bigger, then smaller.
-    2. Set `count` to `6`. Then `4`. Then `3`.
-    3. Make the radius grow as `i` climbs, so it spirals outward.
-    4. Make every second point closer to the middle than the others. (`i % 2` is `0` on
-       even numbers and `1` on odd ones.)
+    2. Make a hexagon / triangle shape.
+    3. Make the shape spiral outwards.
+    4. Make every second point closer to the middle than the others. (`i % 2` = `0` on
+       even numbers and = `1` on odd ones.)
     """)
     return
 

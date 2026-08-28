@@ -15,18 +15,20 @@ with app.setup:
 @app.cell(hide_code=True)
 def _():
     mo.md("""
-    # Day 3b · Past the die
+    # Day 3b - Past the die
 
     A die produces one cross-section for the whole length of the noodle. That is what a
     die is, and it is the constraint every shape in `a-cross-section.py` was built under.
 
     A printer has no die. The cross-section can change anywhere along the path, and so
-    can things a die has no access to at all: how much plastic comes out, how fast the
-    nozzle moves, whether it extrudes at all.
+    can things a die has no access to at all: how much plastic comes out, where the
+    nozzle sits within a lap, whether it extrudes at all.
 
-    Four of those are below. Each one takes a **region** — a band of height and a slice
-    of the circle — so it applies somewhere specific instead of everywhere. Outside the
-    region the object prints normally.
+    You already varied flow on day 2, but everywhere at once and on a rule — a sine wave
+    up the whole wall. Four handles are below, and what is new is the **region**: a band
+    of height and a slice of the circle, so each one applies somewhere you chose instead
+    of everywhere. Outside the region the object prints normally. Aiming a defect is what
+    turns it into a technique.
     """)
     return
 
@@ -64,7 +66,7 @@ def _():
                         "**Height band** is a fraction of the total height — `0` is the bed, "
                         "`1` is the top.\n\n"
                         "**Angle sector** narrows it to one side of the object. Leave it at "
-                        "`0–360` to go all the way round.\n\n"
+                        "`0-360` to go all the way round.\n\n"
                         "**Fade** ramps the strength up and back down instead of switching it. "
                         "Hard edges are also a choice — try it off."
                     ),
@@ -169,7 +171,7 @@ def _():
 
     1. Each quirk on its own, full height band, full sector, strength around `0.6`.
        Note what each one does to the preview.
-    2. Narrow the sector to `0–90`. The same quirk now applies to one side only.
+    2. Narrow the sector to `0-90`. The same quirk now applies to one side only.
     3. Turn fade off. A hard edge at the band boundary is a different object from a
        ramp, and both are choices.
     4. Place two quirks at stated positions on one object and write down the values you

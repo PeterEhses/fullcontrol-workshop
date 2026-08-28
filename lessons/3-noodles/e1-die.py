@@ -15,12 +15,11 @@ with app.setup:
 @app.cell(hide_code=True)
 def _():
     mo.md("""
-    # Day 3 · Exercise 1 — cut a die
+    # Day 3 - Exercise 1: cut a die
 
     `section_at` is the die. It is called once per point with `round_the_tube`, which runs
-    0 to 1 once per lap, and returns a radius in millimetres.
-
-    A plain circle right now. Make it produce:
+    0 to 1 once per lap, and returns a radius in millimetres. A plain circle right now.
+    Make it produce:
 
     1. Rigatoni: 14 shallow ridges. (`math.sin(round_the_tube * math.tau * 14)` runs
        through 14 full waves per lap.)

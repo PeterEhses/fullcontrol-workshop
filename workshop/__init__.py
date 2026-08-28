@@ -1,4 +1,4 @@
-"""Shared bits every lesson needs, so the notebooks can stay about the geometry."""
+"""What every lesson imports, so the notebooks stay about the geometry."""
 
 from workshop.plot import plot_steps
 from workshop.printer import PRINTER, Printer, gcode_controls, plot_controls, save_gcode, to_gcode
