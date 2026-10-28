@@ -53,3 +53,10 @@ output/      generated G-code
 
 Printer settings are in `workshop/printer.py`, currently a Prusa MK4S. Change them there
 and every lesson follows.
+
+## Licence
+
+The lessons, briefs, reference pieces and helper code here are MIT-licensed (see
+`LICENSE`): use them, teach with them, change them. FullControl itself is a separate
+project under its own licence (GPL-3.0); `uv sync` installs it, nothing of it is copied in
+here. Contributions are welcome: new noodles, printer profiles, translations, fixes.
